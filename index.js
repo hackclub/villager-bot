@@ -137,6 +137,8 @@ function purchase(message, item) {
             console.error(err);
             return;
         }
+
+        bot.replyPublic(message, "I'm sorry good sir... I don't understand.")
     });
 
 }
