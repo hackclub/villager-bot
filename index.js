@@ -215,7 +215,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                         console.log("Starting refund!")
 
                         // 1. talk to banker 
-                        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined Payment Refund.")
+                        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + record.get("Purchase ID"))
 
                         // 2. talk to user (I've refunded)
                         bot.say({
