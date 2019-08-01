@@ -206,7 +206,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                             bot.say({
                                 user: '@' + customer,
                                 channel: '@' + customer,
-                                text: "*:tada: Your order #" + record.get("Purchase ID") + " has been paid!* A staff member will be in touch soon."
+                                text: "*:tada: Your order #" + record.get("Purchase ID") + " has been paid by <@" + user + ">!* A staff member will be in touch soon."
                             })
                         });
 
