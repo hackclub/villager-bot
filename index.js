@@ -101,26 +101,31 @@ function purchase(message, item) {
 
             if (record.get("Item ID") == item) {
 
-                base('TOrders').create({
-                    "Product": [record.getId()],
-                    "Timestamp": moment().tz("America/Los_Angeles").format(),
-                    "Slack ID": message.user_id,
-                    "Slack Name": message.user_name,
-                    "Payment Key": randomstring.generate(8)
-                }, function (e, r) {
-                    if (e) {
-                        console.error(e);
-                        return
-                    }
-                    console.log("Created order " + r.get("Purchase ID"))
-
-                    var prompt = "*Order #" + r.get("Purchase ID") + " created* :white_check_mark:\n\n" +
-                        "Please reply with the following command to complete the payment process. You can... " +
-                        "also have your best friend pay for you by asking them to use this command.\n\nYour payment key " +
-                        "is unique to your order! I will let you know when the payment is received. \n\nAlso, notice my hat! \n\n"
-                    var command = "/give <@ULX6HE0DN> " + record.get("Price") + "gp for $" + r.get("Payment Key") + "$"
-                    bot.replyPublic(message, prompt + "```\n" + command + "\n```")
-                })
+                if (record.get("Available")) {
+                    base('TOrders').create({
+                        "Product": [record.getId()],
+                        "Timestamp": moment().tz("America/Los_Angeles").format(),
+                        "Slack ID": message.user_id,
+                        "Slack Name": message.user_name,
+                        "Payment Key": randomstring.generate(8)
+                    }, function (e, r) {
+                        if (e) {
+                            console.error(e);
+                            return
+                        }
+                        console.log("Created order " + r.get("Purchase ID"))
+    
+                        var prompt = "*Order #" + r.get("Purchase ID") + " created* :white_check_mark:\n\n" +
+                            "Please reply with the following command to complete the payment process. You can... " +
+                            "also have your best friend pay for you by asking them to use this command.\n\nYour payment key " +
+                            "is unique to your order! I will let you know when the payment is received. \n\nAlso, notice my hat! \n\n"
+                        var command = "/give <@ULX6HE0DN> " + record.get("Price") + "gp for $" + r.get("Payment Key") + "$"
+                        bot.replyPublic(message, prompt + "```\n" + command + "\n```")
+                    })
+                } else {
+                    bot.replyPublic("Oops. I'm out of \"" + record.get("Product") + "\" at this moment (I think someone just stole the last one in stock!)... Try again next time!")
+                }
+                
                 return
             }
         });
