@@ -1,5 +1,7 @@
 # Villager
 
+![Villager](public/villager.jpg)
+
 *The villager wanders across the peaceful village. Hello, ordinary customer.*
 
 Good sir,
