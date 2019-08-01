@@ -123,7 +123,7 @@ function purchase(message, item) {
                         bot.replyPublic(message, prompt + "```\n" + command + "\n```")
                     })
                 } else {
-                    bot.replyPublic("Oops. I'm out of \"" + record.get("Product") + "\" at this moment (I think someone just stole the last one in stock!)... Try again next time!")
+                    bot.replyPublic(message, "Oops. I'm out of \"" + record.get("Product") + "\" at this moment (I think someone just stole the last one in stock!)... Try again next time!")
                 }
                 
                 return
