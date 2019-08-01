@@ -152,10 +152,14 @@ controller.on('slash_command', (bot, message) => {
     if (command == '/market') {
         sendMarket(message)
     } else if (command == '/buy') {
+        var text = message.text
 
-        var item = message.text.split("!")[1]
-        purchase(message, item)
-
+        if (text.substring(0,1) != "!") 
+            bot.replyPublic(message, "Wrong syntax good sir... Use `/buy !CODE`.")
+        else {
+            var item = text.split("!")[1]
+            purchase(message, item)
+        }
     }
 })
 
@@ -169,6 +173,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
             amount = parseInt(raw[2]),
             key = raw[3].substring(6, raw[3].length - 2)
 
+        // communication identifier
         if (raw[0] != "$$$")
             return
 
