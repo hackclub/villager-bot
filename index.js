@@ -123,7 +123,7 @@ function purchase(message, item) {
                         bot.replyPublic(message, prompt + "```\n" + command + "\n```")
                     })
                 } else {
-                    bot.replyPublic(message, "Oops. I'm out of \"" + record.get("Product") + "\" at this moment (I think someone just stole the last one in stock!)... Try again next time!")
+                    bot.replyPublic(message, "Oops. I'm out of \"" + record.get("Product") + "\" at the moment... Perhaps I could interest you with ~a bite of my new hat~ a sniff of *my new hat*? hehe")
                 }
                 
                 return
@@ -160,7 +160,7 @@ controller.on('slash_command', (bot, message) => {
         var text = message.text
 
         if (text.substring(0,1) != "!") 
-            bot.replyPublic(message, "Wrong syntax good sir... Use `/buy !CODE`.")
+            bot.replyPublic(message, "Hurrrrrr... Use `/buy !CODE`.")
         else {
             var item = text.split("!")[1]
             purchase(message, item)
