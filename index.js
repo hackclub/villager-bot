@@ -313,15 +313,15 @@ controller.hears('.*', 'direct_message', (bot, message) => {
 
         console.log("Raw DM: " + raw)
 
-        var action = raw[1],
-            order = parseInt(raw[2]),
-            reason = raw[3],
-            key = raw[4]
+        var action = raw[0],
+            order = parseInt(raw[1]),
+            reason = message.text.split(/"/)[1],
+            key = raw[3]
         
         if (key == process.env.ADMIN_KEY) {
 
             // initiate refund process
-            // (refund 10 reason ADMINKEYTOKEN)
+            // (refund 10 "reason" ADMINKEYTOKEN)
             if (action == "refund") {
 
                 // verify if amount is correct
