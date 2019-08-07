@@ -120,7 +120,7 @@ function purchase(message, item) {
                             "also have your best friend pay for you by asking them to use this command.\n\nYour payment key " +
                             "is unique to your order! I will let you know when the payment is received. \n\nAlso, notice my hat! \n\n"
                         var command = "/give <@ULX6HE0DN> " + record.get("Price") + "gp for $" + r.get("Payment Key") + "$"
-                        
+
                         bot.replyPublic(message, prompt + "```\n" + command + "\n```")
                     })
                 } else {
@@ -161,22 +161,25 @@ function lookup(message, order) {
 
             if (record.get("Purchase ID") == order) {
                 // found order
-                base('TOrders').find(record.getId(), function(err, record) {
-                    if (err) { console.error(err); return; }
+                base('TOrders').find(record.getId(), function (err, record) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
 
                     if (record.get("Slack ID") !== message.user) {
                         bot.replyPublic(message, ":man-shrugging: I'm sorry... It looks like I can't give you that information.")
                         return
                     } else {
                         var status = record.get("Status")
-                        if (status === undefined) 
+                        if (status === undefined)
                             bot.replyPublic(message, ":alarm_clock:  Order #" + order + " is currently *pending*. Please check back later!")
                         else if (status == "Completed")
                             bot.replyPublic(message, ":star2: Order #" + order + " has been *completed*. If you have any questions, please email team@hackclub.com.")
                         else
                             bot.replyPublic(message, ":information_source: Order #" + order + " is currently *" + status + "*.")
                         return
-                    } 
+                    }
                 });
 
             }
@@ -186,6 +189,29 @@ function lookup(message, order) {
     });
 }
 
+function refund(message, order, amount, user, autoDecline, reason) {
+    // refund
+    console.log("Starting refund for order #" + order + "!")
+
+    // 1. talk to banker 
+    if (autoDecline)
+        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + order)
+    else
+        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Cancelled order refund for order #" + order) 
+
+    var text = "";
+
+    if (autoDecline) 
+        text = ":rotating_light: *Your payment for order #" + order + " has been declined.* Please double check and try again."
+    else   
+        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded.* Reason: " + reason
+    // 2. talk to user (I've refunded)
+    bot.say({
+        user: '@' + user,
+        channel: '@' + user,
+        text: text
+    })
+}
 
 // handle slack command end
 controller.on('slash_command', (bot, message) => {
@@ -269,18 +295,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                         });
 
                     } else {
-                        // refund
-                        console.log("Starting refund!")
-
-                        // 1. talk to banker 
-                        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + record.get("Purchase ID"))
-
-                        // 2. talk to user (I've refunded)
-                        bot.say({
-                            user: '@' + user,
-                            channel: '@' + user,
-                            text: ":rotating_light: *Your payment for order #" + record.get("Purchase ID") + " has been declined.* Please double check and try again."
-                        })
+                        refund(message, record.get("Purchase ID"), amount, user, true)
                     }
                 }
             });
@@ -294,6 +309,54 @@ controller.hears('.*', 'direct_message', (bot, message) => {
             }
         });
     } else {
+        var raw = message.text.split(" ").map(item => item.trim());
+
+        console.log("Raw DM: " + raw)
+
+        var action = raw[1],
+            order = parseInt(raw[2]),
+            reason = raw[3],
+            key = raw[4]
+        
+        if (key == process.env.ADMIN_KEY) {
+
+            // initiate refund process
+            // (refund 10 reason ADMINKEYTOKEN)
+            if (action == "refund") {
+
+                // verify if amount is correct
+                base('TOrders').select({
+                    // Selecting the first 3 records in Grid view:
+                    maxRecords: 100,
+                    view: "Grid view"
+                }).eachPage(function page(records, fetchNextPage) {
+
+                    records.forEach(function (record) {
+
+                        if (record.get("Purchase ID") == order) {
+
+                            // initiate refund process
+                            base('TOrders').update(record.getId(), {
+                                "Paid": false,
+                                "Paid Timestamp": moment().tz("America/Los_Angeles").format()
+                            }, function (err, record) {
+                                refund(message, record.get("Purchase ID"), record.get("Product Price"), record.get("Slack ID"), false, reason)
+                            })
+
+                        }
+                    });
+
+                    fetchNextPage();
+
+                }, function done(err) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                });
+            }
+
+        }
         bot.replyInThread(message, 'new hat... who dis?')
     }
 
