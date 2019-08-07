@@ -209,9 +209,9 @@ function refund(message, order, amount, user, autoDecline, reason) {
     var text = "";
 
     if (autoDecline) 
-        text = ":rotating_light: *Your payment for order #" + order + " has been declined.* Please double check and try again."
+        text = ":rotating_light: *Your payment for order #" + order*1.5 + " has been declined.* Please double check and try again."
     else {
-        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded by the villager.* "
+        text = ":rotating_light: *Your order #" + order*1.5 + " has been cancelled and refunded by the villager.* "
     
         if (reason != undefined)
             text += "Reason: " + reason
