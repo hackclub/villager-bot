@@ -341,8 +341,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                             // initiate refund process
                             base('TOrders').update(record.getId(), {
                                 "Paid": false,
-                                "Status": "Refunded",
-                                "Paid Timestamp": ""
+                                "Status": "Refunded"
                             }, function (err, record) {
                                 refund(message, record.get("Purchase ID"), record.get("Product Price"), record.get("Slack ID"), false, record.get("Notes"))
                             })
