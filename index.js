@@ -196,8 +196,14 @@ function refund(message, order, amount, user, autoDecline, reason) {
     // 1. talk to banker 
     if (autoDecline)
         bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + order)
-    else
-        bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Cancelled order refund for order #" + order) 
+    else {
+        // directly DM banker
+        bot.say({
+            user: "@UH50T81A6",
+            channel: "@UH50T81A6",
+            text: "give <@" + user + "> " + amount + "gp for Cancelled order refund of order #" + order
+        })
+    }  
 
     var text = "";
 
@@ -315,7 +321,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
 
         var action = raw[0],
             order = parseInt(raw[1]),
-            reason = message.text.split(/"/)[1],
+            reason = message.text.split('"')[1],
             key = raw[raw.length-1]
         
         if (key == process.env.ADMIN_KEY) {
