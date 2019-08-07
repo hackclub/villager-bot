@@ -358,9 +358,10 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                     }
                 });
             }
-
+            bot.replyInThread(message, "Refund success!")
+        } else {
+            bot.replyInThread(message, 'new hat... who dis?')
         }
-        bot.replyInThread(message, 'new hat... who dis?')
     }
 
 })
