@@ -316,7 +316,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
         var action = raw[0],
             order = parseInt(raw[1]),
             reason = message.text.split(/"/)[1],
-            key = raw[3]
+            key = raw[raw.length-1]
         
         if (key == process.env.ADMIN_KEY) {
 
