@@ -164,7 +164,11 @@ function lookup(message, order) {
                 base('TOrders').find(record.getId(), function(err, record) {
                     if (err) { console.error(err); return; }
 
-                    bot.replyPublic(message, "Order #" + order + " is currently " + record.get("Status"))
+                    var status = record.get("Status")
+                    if (status == "undefined") 
+                        status = "Pending"
+
+                    bot.replyPublic(message, "Order #" + order + " is currently " + status)
                     return
                 });
 
