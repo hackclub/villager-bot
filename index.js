@@ -166,9 +166,11 @@ function lookup(message, order) {
 
                     var status = record.get("Status")
                     if (status == "undefined") 
-                        status = "Pending"
-
-                    bot.replyPublic(message, "Order #" + order + " is currently " + status)
+                        bot.replyPublic(message, ":alarm_clock:  Order #" + order + " is currently pending fulfillment. Please check back later!")
+                    else if (status == "Completed")
+                        bot.replyPublic(message, ":star2: Order #" + order + " has been completed. If you have any questions, please email team@hackclub.com.")
+                    else
+                        bot.replyPublic(message, ":information_source: Order #" + order + " is currently " + status + ".")
                     return
                 });
 
