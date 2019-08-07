@@ -193,6 +193,7 @@ function refund(message, order, amount, user, autoDecline, reason) {
     // refund
     console.log("Starting refund for order #" + order + "!")
 
+
     // 1. talk to banker 
     if (autoDecline)
         bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + order)
@@ -209,9 +210,13 @@ function refund(message, order, amount, user, autoDecline, reason) {
 
     if (autoDecline) 
         text = ":rotating_light: *Your payment for order #" + order + " has been declined.* Please double check and try again."
-    else   
-        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded by the villager.* Reason: " + reason
-    // 2. talk to user (I've refunded)
+    else {
+        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded by the villager.* "
+    
+        if (reason != undefined)
+            text += "Reason: " + reason
+    }
+        // 2. talk to user (I've refunded)
     bot.say({
         user: '@' + user,
         channel: '@' + user,
