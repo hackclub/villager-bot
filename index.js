@@ -317,17 +317,14 @@ controller.hears('.*', 'direct_message', (bot, message) => {
     } else {
         var raw = message.text.split(" ").map(item => item.trim());
 
-        console.log("Raw DM: " + raw)
-
         var action = raw[0],
             order = parseInt(raw[1]),
-            reason = message.text.split('"')[1],
             key = raw[raw.length-1]
         
         if (key == process.env.ADMIN_KEY) {
 
             // initiate refund process
-            // (refund 10 "reason" ADMINKEYTOKEN)
+            // (refund 10 ADMINKEYTOKEN)
             if (action == "refund") {
 
                 // verify if amount is correct
@@ -346,7 +343,7 @@ controller.hears('.*', 'direct_message', (bot, message) => {
                                 "Paid": false,
                                 "Paid Timestamp": moment().tz("America/Los_Angeles").format()
                             }, function (err, record) {
-                                refund(message, record.get("Purchase ID"), record.get("Product Price"), record.get("Slack ID"), false, reason)
+                                refund(message, record.get("Purchase ID"), record.get("Product Price"), record.get("Slack ID"), false, record.get("Notes"))
                             })
 
                         }
