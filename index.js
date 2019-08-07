@@ -114,18 +114,19 @@ function purchase(message, item) {
                             return
                         }
                         console.log("Created order " + r.get("Purchase ID"))
-    
+
                         var prompt = "*Order #" + r.get("Purchase ID") + " created* :white_check_mark:\n\n" +
                             "Please reply with the following command to complete the payment process. You can... " +
                             "also have your best friend pay for you by asking them to use this command.\n\nYour payment key " +
                             "is unique to your order! I will let you know when the payment is received. \n\nAlso, notice my hat! \n\n"
                         var command = "/give <@ULX6HE0DN> " + record.get("Price") + "gp for $" + r.get("Payment Key") + "$"
+                        
                         bot.replyPublic(message, prompt + "```\n" + command + "\n```")
                     })
                 } else {
                     bot.replyPublic(message, "Oops. I'm out of \"" + record.get("Product") + "\" at the moment... Perhaps I could interest you with ~a bite of my new hat~ a sniff of *my new hat*? hehe")
                 }
-                
+
                 return
             }
         });
@@ -140,6 +141,40 @@ function purchase(message, item) {
     });
 
 }
+
+// lookup status of order
+function lookup(message, order) {
+
+    if (isNaN(order))
+        console.log("Uhh... Param passed into lookup() is not an order #")
+
+    console.log("User " + message.user_id + " requested a lookup for order #" + order)
+
+    // verify if amount is correct
+    base('TOrders').select({
+        // Selecting the first 100 records in Grid view:
+        maxRecords: 100,
+        view: "Grid view"
+    }).eachPage(function page(records, fetchNextPage) {
+
+        records.forEach(function (record) {
+
+            if (record.get("Purchase ID") == order) {
+                // found order
+                base('TOrders').find(record.getId(), function(err, record) {
+                    if (err) { console.error(err); return; }
+
+                    bot.replyPublic(message, "Order #" + order + " is currently " + record.get("Status"))
+                    return
+                });
+
+            }
+
+        })
+
+    });
+}
+
 
 // handle slack command end
 controller.on('slash_command', (bot, message) => {
@@ -159,11 +194,18 @@ controller.on('slash_command', (bot, message) => {
     } else if (command == '/buy') {
         var text = message.text
 
-        if (text.substring(0,1) != "!") 
+        if (text.substring(0, 1) != "!")
             bot.replyPublic(message, "Hurrrrrr... Use `/buy !CODE`.")
         else {
             var item = text.split("!")[1]
             purchase(message, item)
+        }
+    } else if (command == '/order') {
+        var order = +message.text
+        if (order == NaN) {
+            bot.replyPublic(message, "Hurrrrr... wut? Use `/order #`")
+        } else {
+            lookup(message, order)
         }
     }
 })
