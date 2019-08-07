@@ -120,7 +120,8 @@ function purchase(message, item) {
                             "also have your best friend pay for you by asking them to use this command.\n\nYour payment key " +
                             "is unique to your order! I will let you know when the payment is received. \n\nAlso, notice my hat! \n\n"
                         var command = "/give <@ULX6HE0DN> " + record.get("Price") + "gp for $" + r.get("Payment Key") + "$"
-                        bot.replyPublic(message, prompt + "```\n" + command + "\n```")
+                        bot.replyPublic(message, prompt)
+                        bot.replyPublic(message, "```\n" + command + "\n```")
                     })
                 } else {
                     bot.replyPublic(message, "Oops. I'm out of \"" + record.get("Product") + "\" at the moment... Perhaps I could interest you with ~a bite of my new hat~ a sniff of *my new hat*? hehe")
