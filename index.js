@@ -123,7 +123,7 @@ function purchase(message, item) {
                         bot.replyPublic(message, prompt)
                         bot.say({
                             text: "```\n" + command + "\n```",
-                            channel: message.channel_id
+                            channel: message.channel
                         })
                     })
                 } else {
