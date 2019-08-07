@@ -210,7 +210,7 @@ function refund(message, order, amount, user, autoDecline, reason) {
     if (autoDecline) 
         text = ":rotating_light: *Your payment for order #" + order + " has been declined.* Please double check and try again."
     else   
-        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded.* Reason: " + reason
+        text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded by the villager.* Reason: " + reason
     // 2. talk to user (I've refunded)
     bot.say({
         user: '@' + user,
