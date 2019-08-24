@@ -4,8 +4,12 @@ var _ = require('lodash')
 var express = require('express')
 var moment = require('moment-timezone')
 var randomstring = require("randomstring")
+var fs = require("fs")
 
 var app = express()
+
+var rawData = fs.readFileSync("data.json")
+var data = JSON.parse(rawData)
 
 require('dotenv').config()
 
@@ -167,7 +171,7 @@ function lookup(message, order) {
                         return;
                     }
 
-                    if (record.get("Slack ID") !== message.user) {
+                    if (record.get("Slack ID") !== message.user && !data.admins.includes(target)) {
                         bot.replyPublic(message, ":man-shrugging: I'm sorry... It looks like I can't give you that information.")
                         return
                     } else {
@@ -194,7 +198,7 @@ function refund(message, order, amount, user, autoDecline, reason) {
     console.log("Starting refund for order #" + order + "!")
 
 
-    // 1. talk to banker 
+    // 1. talk to banker
     if (autoDecline)
         bot.replyInThread(message, "<@UH50T81A6> give <@" + user + "> " + amount + "gp for Declined payment refund for order #" + order)
     else {
@@ -204,19 +208,19 @@ function refund(message, order, amount, user, autoDecline, reason) {
             channel: "@UH50T81A6",
             text: "give <@" + user + "> " + amount + "gp for Cancelled order refund of order #" + order
         })
-    }  
+    }
 
     var text = "";
 
-    if (autoDecline) 
+    if (autoDecline)
         text = ":rotating_light: *Your payment for order #" + order + " has been declined.* Please double check and try again."
     else {
         text = ":rotating_light: *Your order #" + order + " has been cancelled and refunded by the villager.* "
-    
+
         if (reason != undefined)
             text += "Reason: " + reason
     }
-        // 2. talk to user (I've refunded)
+    // 2. talk to user (I've refunded)
     bot.say({
         user: '@' + user,
         channel: '@' + user,
@@ -236,7 +240,7 @@ controller.on('slash_command', (bot, message) => {
     console.log(`Slash command received from ${user_id}: ${text}`)
     console.log(message)
 
-    // list 
+    // list
     if (command == '/market') {
         sendMarket(message)
     } else if (command == '/buy') {
@@ -324,8 +328,8 @@ controller.hears('.*', 'direct_message', (bot, message) => {
 
         var action = raw[0],
             order = parseInt(raw[1]),
-            key = raw[raw.length-1]
-        
+            key = raw[raw.length - 1]
+
         if (key == process.env.ADMIN_KEY) {
 
             // initiate refund process
