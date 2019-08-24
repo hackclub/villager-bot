@@ -171,7 +171,7 @@ function lookup(message, order) {
                         return;
                     }
 
-                    if (record.get("Slack ID") !== message.user && !data.admins.includes(target)) {
+                    if (record.get("Slack ID") !== message.user && !data.admins.includes(message.user)) {
                         bot.replyPublic(message, ":man-shrugging: I'm sorry... It looks like I can't give you that information.")
                         return
                     } else {
