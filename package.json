@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "airtable": "^0.7.0",
+    "airtable": "^0.7.1",
     "botkit": "0.7.4",
     "botkit-storage-mongo": "^1.0.7",
     "dotenv": "^8.0.0",
