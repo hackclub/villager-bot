@@ -12,7 +12,7 @@
     "botkit-storage-mongo": "^1.0.7",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
     "randomstring": "^1.1.5"
