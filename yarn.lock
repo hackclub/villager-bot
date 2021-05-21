@@ -529,15 +529,15 @@ agent-base@^4.3.0:
   dependencies:
     es6-promisify "^5.0.0"
 
-airtable@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/airtable/-/airtable-0.11.0.tgz#43199e663f4f9b47a7e7cbe5d75ca0e2d5a8ddb6"
-  integrity sha512-PwFAFooF7MA9QzxbuhTOckkeLJ/O4Ro4Af0a696AVa4UAV+HAuuLwMiy6bsNRJwT6E1KR8FcsWGVB7CSCu7b0A==
+airtable@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/airtable/-/airtable-0.11.1.tgz#2fda51da04f5e4be7092351ea7be3cfdcf308347"
+  integrity sha512-33zBuUDhLl+FWWAFxFjS1a+vJr/b+UK//EV943nuiimChWph6YykQjYPmu/GucQ30g7mgaqq+98uPD4rfDHOgg==
   dependencies:
     "@types/node" ">=8.0.0 <15"
     abort-controller "^3.0.0"
     abortcontroller-polyfill "^1.4.0"
-    lodash "^4.17.19"
+    lodash "^4.17.21"
     node-fetch "^2.6.1"
 
 ajv@^6.5.5:
@@ -2016,7 +2016,7 @@ lodash.uniq@^4.2.1:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.11.1, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.6.1:
+lodash@^4.11.1, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.21, lodash@^4.6.1:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
